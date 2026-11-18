@@ -1,0 +1,14 @@
+{
+  "name": "baseline",
+  "weights": "yolo11n.pt",
+  "overrides": {},
+  "params_M": 2.61,
+  "precision": 0.35152882929735946,
+  "recall": 0.26589902103809565,
+  "map50": 0.22440353025029364,
+  "map50_95": 0.1206246653207475,
+  "infer_ms": 2.06,
+  "train_minutes": 7.0,
+  "epochs": 12,
+  "fraction": 0.2
+}

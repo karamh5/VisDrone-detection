@@ -1,0 +1,21 @@
+{
+  "name": "regularized",
+  "weights": "yolo11n.pt",
+  "overrides": {
+    "cos_lr": true,
+    "weight_decay": 0.002,
+    "scale": 0.7,
+    "mixup": 0.1,
+    "hsv_s": 0.8,
+    "fliplr": 0.5
+  },
+  "params_M": 2.61,
+  "precision": 0.3581732482022003,
+  "recall": 0.25608255009260217,
+  "map50": 0.22286267307109658,
+  "map50_95": 0.12163112674366897,
+  "infer_ms": 1.9,
+  "train_minutes": 3.4,
+  "epochs": 12,
+  "fraction": 0.2
+}

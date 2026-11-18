@@ -1,0 +1,4 @@
+datasets/
+runs/**/weights/last.pt
+*.pt
+__pycache__/
