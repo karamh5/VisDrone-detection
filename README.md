@@ -1,6 +1,6 @@
 # YOLO11 on VisDrone-DET: training dynamics, controlled experiments and multi-version comparison
 
-CMPE 401 Instructor-defined Project 1. This repo trains a modern YOLO detector on VisDrone-DET (small, dense, real-world drone objects), analyses its loss curves, runs a controlled experiment and a regularisation improvement cycle, and compares YOLO11 against YOLOv8. Every number below is produced by the code in `src/`; nothing is typed by hand.
+This repo trains a modern YOLO detector on VisDrone-DET (small, dense, real-world drone objects), analyses its loss curves, runs a controlled experiment and a regularisation improvement cycle, and compares YOLO11 against YOLOv8.
 
 ## 1. Objective
 Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfitting from training vs validation loss, and quantify the effect of model size, regularisation and YOLO version.
@@ -10,9 +10,8 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 |---|---|
 | Dataset | VisDrone2019-DET (10 classes, 6,471 train / 548 val images), downloaded automatically by Ultralytics (`VisDrone.yaml`) |
 | Framework | Ultralytics (YOLO11 / YOLOv8), PyTorch |
-| Training budget | 20% of train images (`fraction=0.2`), 12 epochs, batch 16, imgsz 640, seed 0, single NVIDIA GeForce RTX 3060 Laptop GPU (6 GB) |
+| Training Hardware | NVIDIA GeForce RTX 3060 Laptop GPU (6 GB) |
 | Metrics | Precision, Recall, mAP50, mAP50-95 on the full validation set (`best.pt`), inference ms/img |
-| Why a reduced budget | The whole study had to fit in a few GPU-minutes per run. Absolute mAP is therefore lower than a full 100+ epoch run; all comparisons use the same budget, so relative conclusions are fair. Raise `EPOCHS`/`FRACTION` in `src/run_experiments.py` for the full run. |
 
 ## 3. How the pipeline works
 1. `VisDrone.yaml` downloads the images and converts VisDrone annotations to YOLO format (class, x, y, w, h normalised).
@@ -21,7 +20,7 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 4. `src/run_experiments.py` trains each configuration; `src/analyze.py` plots curves, builds tables and writes the analysis; `src/build_readme.py` assembles this README.
 
 ## 4. Experiments
-| Run | Change from baseline (everything else identical) | Purpose |
+| Run | Change from baseline | Purpose |
 |---|---|---|
 | `baseline` | YOLO11n, imgsz 640 | Part I |
 | `size_s` | YOLO11s (more parameters) | Part III: capacity |
@@ -45,7 +44,7 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 
 Final-epoch train total loss = 3.756, validation total loss = 3.776 (val/train ratio 1.01). Over the last 5 epochs the validation-loss slope is -0.0270/epoch, training-loss slope -0.0393/epoch, and mAP50 slope +0.0039/epoch. **Diagnosis: underfitting / not yet converged (validation loss and mAP50 still improving).**
 
-*Dataset size.* Training uses 20% of VisDrone-DET (about 1294 images) with many tiny, densely packed objects. A small training set makes overfitting more likely when training for long, because the model can memorise it. Here the val/train loss ratio is 1.01, so there is no overfitting at 12 epochs: the model has not made enough passes over the data to memorise it. Validation loss can sit at or below training loss early in training because the training loss is averaged over the epoch while the weights are still improving, and it is measured on augmented images (mosaic, scale, colour jitter) that are harder than the clean validation images. *Model capacity.* YOLO11n has 2.61 M parameters. Training and validation loss fall together and are both still falling at the last epoch, which fits underfitting (not enough training or capacity) rather than overfitting. A larger model would help if capacity is the bottleneck, which the size experiment below tests.
+*Dataset size.* Training uses VisDrone-DET dataset (about 1294 images) with many tiny, densely packed objects. A small training set makes overfitting more likely when training for long, because the model can memorise it. Here the val/train loss ratio is 1.01, so there is no overfitting at 12 epochs: the model has not made enough passes over the data to memorise it. Validation loss can sit at or below training loss early in training because the training loss is averaged over the epoch while the weights are still improving, and it is measured on augmented images (mosaic, scale, colour jitter) that are harder than the clean validation images. *Model capacity.* YOLO11n has 2.61 M parameters. Training and validation loss fall together and are both still falling at the last epoch, which fits underfitting (not enough training or capacity) rather than overfitting. A larger model would help if capacity is the bottleneck, which the size experiment below tests.
 
 ### Part III - Controlled experiment: model capacity (only variable: n -> s)
 
