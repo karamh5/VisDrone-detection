@@ -21,7 +21,7 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 4. `src/run_experiments.py` trains each configuration; `src/analyze.py` plots curves, builds tables and writes the analysis; `src/build_readme.py` assembles this README.
 
 ## 4. Experiments
-| Run | Change from baseline (everything else identical) | Purpose |
+| Run | Change from baseline | Purpose |
 |---|---|---|
 | `baseline` | YOLO11n, imgsz 640 | Part I |
 | `size_s` | YOLO11s (more parameters) | Part III: capacity |
