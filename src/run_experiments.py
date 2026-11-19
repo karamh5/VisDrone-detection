@@ -6,7 +6,7 @@ import sys, json, time
 from pathlib import Path
 from ultralytics import YOLO
 
-EPOCHS, FRACTION, BATCH, SEED = 12, 0.2, 16, 0   # FRACTION = share of the 6,471 train images used
+EPOCHS, FRACTION, BATCH, SEED = 30, 1.0, 16, 0   # FRACTION = share of the 6,471 train images used (1.0 = all)
 DATA = "VisDrone.yaml"                            # Ultralytics auto-downloads VisDrone2019-DET on first use
 OUT = Path("runs").resolve(); RES = Path("results"); RES.mkdir(exist_ok=True)
 

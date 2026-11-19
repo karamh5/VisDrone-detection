@@ -1,6 +1,6 @@
 # YOLO11 on VisDrone-DET: training dynamics, controlled experiments and multi-version comparison
 
-CMPE 401 Instructor-defined Project 1. This repo trains a modern YOLO detector on VisDrone-DET (small, dense, real-world drone objects), analyses its loss curves, runs a controlled experiment and a regularisation improvement cycle, and compares YOLO11 against YOLOv8. Every number below is produced by the code in `src/`; nothing is typed by hand.
+CMPE 401 Instructor-defined Project 1. This repo trains a modern YOLO detector on VisDrone-DET (small, dense, real-world drone objects), analyses its loss curves, runs a controlled experiment and a regularisation improvement cycle, and compares YOLO11 against YOLOv8. Every number in the tables is produced by the code in `src/`.
 
 ## 1. Objective
 Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfitting from training vs validation loss, and quantify the effect of model size, regularisation and YOLO version.
@@ -10,9 +10,9 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 |---|---|
 | Dataset | VisDrone2019-DET (10 classes, 6,471 train / 548 val images), downloaded automatically by Ultralytics (`VisDrone.yaml`) |
 | Framework | Ultralytics (YOLO11 / YOLOv8), PyTorch |
-| Training budget | 20% of train images (`fraction=0.2`), 12 epochs, batch 16, imgsz 640, seed 0, single NVIDIA GeForce RTX 3060 Laptop GPU (6 GB) |
+| Training budget | All 6,471 train images (`fraction=1.0`), 30 epochs, batch 16, imgsz 640, seed 0, single NVIDIA GeForce RTX 3060 Laptop GPU (6 GB) |
 | Metrics | Precision, Recall, mAP50, mAP50-95 on the full validation set (`best.pt`), inference ms/img |
-| Why a reduced budget | The whole study had to fit in a few GPU-minutes per run. Absolute mAP is therefore lower than a full 100+ epoch run; all comparisons use the same budget, so relative conclusions are fair. Raise `EPOCHS`/`FRACTION` in `src/run_experiments.py` for the full run. |
+| Budget choice | 30 epochs per run keeps four full-data runs within a few hours on one laptop GPU (see the Train min column). A typical full study uses 100+ epochs, so absolute mAP would be higher with a longer schedule; all four runs share the same budget, so the comparisons are fair. An earlier pilot (20% of the data, 12 epochs) is kept in `pilot_20pct/` and compared below. |
 
 ## 3. How the pipeline works
 1. `VisDrone.yaml` downloads the images and converts VisDrone annotations to YOLO format (class, x, y, w, h normalised).
@@ -33,11 +33,11 @@ Understand the YOLO detection pipeline, fine-tune YOLO11, diagnose over/underfit
 ## 5. Reproduce
 ```bash
 pip install ultralytics
-python src/run_experiments.py      # trains all 4 runs (~3-7 min each on an RTX 3060 laptop GPU)
+python src/run_experiments.py      # trains all 4 runs (several hours in total on an RTX 3060 laptop GPU; budget set at the top of the script)
 python src/analyze.py              # figures + results/RESULTS.md
 python src/build_readme.py         # rebuilds this README
 ```
 Or open `notebooks/yolo11_visdrone_colab.ipynb` in Google Colab (Runtime -> T4 GPU -> Run all); the notebook is the same pipeline but was not used for the results reported here.
 
 ## 6. Limitations and next steps
-Reduced training budget (20% data, 12 epochs); single seed, so differences under ~0.005 mAP50 are within noise; the optional VisDrone test-challenge submission was not run. Next: full data, 100 epochs, imgsz 960 for small objects, multiple seeds.
+Training budget of 30 epochs (not the 100+ typical for a full study); single seed, so differences under ~0.005 mAP50 are within noise; the optional VisDrone test-challenge submission was not run. Next: 100 epochs, imgsz 960 for small objects, multiple seeds.

@@ -2,9 +2,9 @@ task: detect
 mode: train
 model: yolo11n.pt
 data: VisDrone.yaml
-epochs: 12
+epochs: 30
 time: null
-patience: 12
+patience: 30
 batch: 16
 imgsz: 640
 save: true
@@ -12,7 +12,7 @@ save_period: -1
 cache: false
 device: ""
 workers: 2
-project: C:\Users\Karam Hammouda\Desktop\cmpe401_projects\cmpe401-project1-yolo11-visdrone\runs
+project: C:\Users\Karam Hammouda\VisDrone-detection\runs
 name: baseline
 exist_ok: true
 pretrained: true
@@ -27,7 +27,7 @@ cos_lr: false
 close_mosaic: 10
 resume: false
 amp: true
-fraction: 0.2
+fraction: 1.0
 profile: false
 freeze: null
 multi_scale: 0.0
@@ -112,4 +112,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: C:\Users\Karam Hammouda\Desktop\cmpe401_projects\cmpe401-project1-yolo11-visdrone\runs\baseline
+save_dir: C:\Users\Karam Hammouda\VisDrone-detection\runs\baseline

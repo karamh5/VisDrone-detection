@@ -2,3 +2,5 @@ datasets/
 runs/**/weights/last.pt
 *.pt
 __pycache__/
+VisDrone-pilot-backup/
+*.pt
